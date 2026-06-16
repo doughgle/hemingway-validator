@@ -1,13 +1,12 @@
 import os
-import sys
 
-from hemingway.parser import parse_markdown, extract_sentences
+from hemingway.parser import extract_sentences, parse_markdown
 from hemingway.rules import (
-    check_hard_sentence,
     check_adverb,
+    check_complex_word,
+    check_hard_sentence,
     check_passive_voice,
     check_qualifier,
-    check_complex_word,
 )
 
 
@@ -92,6 +91,6 @@ def run_validator(file_path=None, stdin_text=None):
     return {
         "error": {
             "type": "no_input",
-            "message": "No input provided. Provide a file path or pipe content via stdin.",
+            "message": "No input provided. Provide a file path or pipe content via stdin.",  # noqa: E501
         }
     }

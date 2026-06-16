@@ -1,5 +1,4 @@
-import pytest
-from hemingway.parser import parse_markdown, extract_sentences
+from hemingway.parser import extract_sentences, parse_markdown
 
 
 class TestParseMarkdown:
@@ -75,7 +74,7 @@ class TestParseMarkdown:
     def test_preserves_line_numbers(self):
         md = "Line one\n\nLine two\n\nLine three"
         result = parse_markdown(md)
-        lines = [l for l, _ in result]
+        lines = [ln for ln, _ in result]
         assert lines == [1, 3, 5]
 
 

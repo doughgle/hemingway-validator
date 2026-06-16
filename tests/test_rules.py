@@ -1,10 +1,9 @@
-import pytest
 from hemingway.rules import (
-    check_hard_sentence,
     check_adverb,
+    check_complex_word,
+    check_hard_sentence,
     check_passive_voice,
     check_qualifier,
-    check_complex_word,
 )
 
 
@@ -15,7 +14,10 @@ class TestHardSentence:
         assert result is None
 
     def test_yellow_warning(self):
-        sentence = "Big complex words in this sentence make the level high around twelve approximately now."
+        sentence = (
+            "Big complex words in this sentence make the level"
+            " high around twelve approximately now."
+        )
         result = check_hard_sentence(sentence, 1)
         assert result is not None
         assert result["rule"] == "hard_sentence"
@@ -61,8 +63,7 @@ class TestHardSentence:
         assert level == -10
 
     def test_edge_14_words(self):
-        sentence = "one two three four five six seven eight nine ten eleven twelve thirteen fourteen"
-        result = check_hard_sentence(sentence, 1)
+        sentence = "one two three four five six seven eight nine ten eleven twelve thirteen fourteen"  # noqa: E501
         words = len(sentence.split())
         assert words >= 14
 

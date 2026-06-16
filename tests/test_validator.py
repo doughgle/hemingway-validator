@@ -1,6 +1,4 @@
-import json
-import pytest
-from hemingway.validator import validate_document, run_validator
+from hemingway.validator import run_validator, validate_document
 
 
 class TestValidateDocument:

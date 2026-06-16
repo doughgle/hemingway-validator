@@ -59,6 +59,7 @@ def cli(argv, stdin_text=None):
 
 
 def main():
-    result = cli(sys.argv, stdin_text=sys.stdin.read() if not sys.stdin.isatty() else None)
+    stdin_text = sys.stdin.read() if not sys.stdin.isatty() else None
+    result = cli(sys.argv, stdin_text=stdin_text)
     sys.stdout.write(result["output"])
     sys.exit(result["exit_code"])

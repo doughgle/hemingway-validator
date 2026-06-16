@@ -1,5 +1,4 @@
 import re
-import math
 
 NON_ADVERBS = {
     "apply", "butterfly", "consequently", "dolly", "early", "family",
