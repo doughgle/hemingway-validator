@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hemingway-validator"
+version = "1.0.0"
+description = "Hemingway-style writing validator for Markdown documents"
+requires-python = ">=3.10"
+dependencies = [
+    "docopt",
+]
+
+[project.scripts]
+hemingway-check = "hemingway.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
