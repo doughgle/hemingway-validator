@@ -1,0 +1,55 @@
+{
+  "document": {
+    "path": "examples/input/simple.md",
+    "line_count": 11,
+    "word_count": 33
+  },
+  "summary": {
+    "hard_sentence": {
+      "warning": 0,
+      "error": 0
+    },
+    "adverb": 1,
+    "passive_voice": 1,
+    "qualifier": 1,
+    "complex_word": 1
+  },
+  "issues": [
+    {
+      "line": 3,
+      "column": 8,
+      "rule": "adverb",
+      "severity": "warning",
+      "text": "quickly",
+      "message": "Adverb \"quickly\" weakens your writing. Consider a stronger verb.",
+      "suggestion": "Use a stronger verb like \"sprinted\" instead of \"ran quickly\"."
+    },
+    {
+      "line": 5,
+      "column": 10,
+      "rule": "passive_voice",
+      "severity": "warning",
+      "text": "was pushed",
+      "message": "Passive voice: \"was pushed\". Use active voice.",
+      "suggestion": "Rewrite so the subject performs the action (e.g. \"He threw the ball\")."
+    },
+    {
+      "line": 7,
+      "column": 9,
+      "rule": "qualifier",
+      "severity": "info",
+      "text": "perhaps",
+      "message": "Qualifier \"perhaps\" weakens your writing.",
+      "suggestion": "Remove the qualifier or rephrase for confidence."
+    },
+    {
+      "line": 9,
+      "column": 8,
+      "rule": "complex_word",
+      "severity": "info",
+      "text": "utilize",
+      "message": "Complex word \"utilize\" has a simpler alternative.",
+      "suggestion": "Replace with \"use\"."
+    }
+  ]
+}
