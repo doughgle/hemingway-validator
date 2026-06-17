@@ -41,3 +41,15 @@ def format_markdown(result):
             lines.append("")
 
     return "\n".join(lines) + "\n"
+
+
+def format_markdown_error(error):
+    lines = [
+        "# Hemingway Validation Report",
+        "",
+        "## Error",
+        f"- Type: {error['type']}",
+        f"- Message: {error['message']}",
+        "",
+    ]
+    return "\n".join(lines) + "\n"

@@ -17,7 +17,7 @@ import sys
 
 from docopt import docopt
 
-from hemingway.report import format_markdown
+from hemingway.report import format_markdown, format_markdown_error
 from hemingway.validator import run_validator
 
 
@@ -39,26 +39,27 @@ def cli(argv, stdin_text=None):
     output_format = args["--output-format"]
 
     if file_path is None and stdin_text is None:
-        return {
-            "exit_code": 1,
-            "output": json.dumps({
-                "error": {
-                    "type": "no_input",
-                    "message": (
-                        "No input provided. Provide a file path or pipe "
-                        "content via stdin."
-                    ),
-                }
-            }, indent=2) + "\n",
+        error = {
+            "type": "no_input",
+            "message": (
+                "No input provided. Provide a file path or pipe "
+                "content via stdin."
+            ),
         }
+        if output_format == "json":
+            output = json.dumps({"error": error}, indent=2) + "\n"
+        else:
+            output = format_markdown_error(error)
+        return {"exit_code": 1, "output": output}
 
     result = run_validator(file_path=file_path, stdin_text=stdin_text)
 
     if "error" in result:
-        return {
-            "exit_code": 1,
-            "output": json.dumps(result, indent=2) + "\n",
-        }
+        if output_format == "json":
+            output = json.dumps(result, indent=2) + "\n"
+        else:
+            output = format_markdown_error(result["error"])
+        return {"exit_code": 1, "output": output}
 
     if output_format == "json":
         output = json.dumps(result, indent=2) + "\n"

@@ -8,7 +8,9 @@ class TestCli:
         args = ["hemingway-check"]
         result = cli(args)
         assert result["exit_code"] == 1
-        assert "error" in result["output"]
+        assert "# Hemingway Validation Report" in result["output"]
+        assert "## Error" in result["output"]
+        assert "Type: no_input" in result["output"]
 
     def test_file_path_default_markdown(self, tmp_path):
         f = tmp_path / "test.md"
@@ -23,8 +25,9 @@ class TestCli:
         args = ["hemingway-check", "/nonexistent/file.md"]
         result = cli(args)
         assert result["exit_code"] == 1
-        data = json.loads(result["output"])
-        assert data["error"]["type"] == "file_not_found"
+        assert "# Hemingway Validation Report" in result["output"]
+        assert "## Error" in result["output"]
+        assert "Type: file_not_found" in result["output"]
 
     def test_stdin_input_default_markdown(self):
         args = ["hemingway-check"]
@@ -43,11 +46,12 @@ class TestCli:
         result = cli(args)
         assert result["exit_code"] == 0
 
-    def test_error_always_json(self):
-        result = cli(["hemingway-check"])
+    def test_error_json_format(self):
+        result = cli(["hemingway-check", "--output-format", "json"])
         assert result["exit_code"] == 1
         data = json.loads(result["output"])
         assert "error" in data
+        assert data["error"]["type"] == "no_input"
 
     def test_markdown_report_structure(self, tmp_path):
         f = tmp_path / "doc.md"
