@@ -265,9 +265,54 @@ Minimum complex-word → simpler mapping:
 
 ## 4. Output
 
-The tool prints a single JSON object to stdout.
+The tool prints a report to stdout. The default format is Markdown KV (key-value), designed for easy parsing by both humans and LLMs without a parser tool. JSON output is available via the `--output-format json` flag.
 
-### 4.1 Success (exit code 0)
+### 4.1 Success — issues found (exit code 0)
+
+**Markdown (default):**
+
+```
+# Hemingway Validation Report
+
+## Document
+- Path: path/to/document.md
+- Lines: 142
+- Words: 3450
+
+## Summary
+| Rule | Count |
+| --- | --- |
+| Hard sentences | 3 warning, 1 error |
+| Adverbs | 12 |
+| Passive voice | 5 |
+| Qualifiers | 8 |
+| Complex words | 6 |
+
+## Issues
+
+1. hard_sentence (error) — path/to/document.md:24:1
+   - Text: The quick brown fox jumps over the lazy dog near the bank of the river where the fish swim downstream...
+   - Message: Sentence is very hard to read (grade level 14).
+   - Suggestion: Split into shorter sentences or simplify vocabulary.
+2. adverb (warning) — path/to/document.md:42:10
+   - Text: quickly
+   - Message: Adverb "quickly" weakens your writing. Consider a stronger verb.
+   - Suggestion: Use a stronger verb like "sprinted" instead of "ran quickly".
+3. passive_voice (warning) — path/to/document.md:55:18
+   - Text: was thrown
+   - Message: Passive voice: "was thrown". Use active voice.
+   - Suggestion: Rewrite so the subject performs the action (e.g. "He threw the ball").
+4. qualifier (info) — path/to/document.md:67:5
+   - Text: perhaps
+   - Message: Qualifier "perhaps" weakens your writing.
+   - Suggestion: Remove the qualifier or rephrase for confidence.
+5. complex_word (info) — path/to/document.md:89:22
+   - Text: utilize
+   - Message: Complex word "utilize" has a simpler alternative.
+   - Suggestion: Replace with "use".
+```
+
+**JSON (`--output-format json`):**
 
 ```json
 {
@@ -333,7 +378,33 @@ The tool prints a single JSON object to stdout.
 }
 ```
 
-### 4.2 No issues (exit code 0)
+### 4.2 Success — no issues (exit code 0)
+
+**Markdown (default):**
+
+```
+# Hemingway Validation Report
+
+## Document
+- Path: path/to/document.md
+- Lines: 30
+- Words: 400
+
+## Summary
+| Rule | Count |
+| --- | --- |
+| Hard sentences | 0 warning, 0 error |
+| Adverbs | 0 |
+| Passive voice | 0 |
+| Qualifiers | 0 |
+| Complex words | 0
+
+## Issues
+
+No issues found.
+```
+
+**JSON (`--output-format json`):**
 
 ```json
 {
@@ -354,6 +425,18 @@ The tool prints a single JSON object to stdout.
 ```
 
 ### 4.3 Error (exit code 1)
+
+**Markdown (default):**
+
+```
+# Hemingway Validation Report
+
+## Error
+- Type: file_not_found
+- Message: File not found: path/to/missing.md
+```
+
+**JSON (`--output-format json`):**
 
 ```json
 {
