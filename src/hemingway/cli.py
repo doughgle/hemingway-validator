@@ -1,35 +1,42 @@
 """hemingway-check - Validate Markdown against Hemingway writing rules.
 
 Usage:
-  hemingway-check [<file>]
+  hemingway-check [--output-format <fmt>] [<file>]
   hemingway-check --version
   hemingway-check --help
 
 If no file is given, reads from stdin.
+
+Options:
+  --output-format <fmt>  Output format (json or markdown, default: markdown)
+  --version              Show version.
+  --help                 Show this message.
 """
 import json
 import sys
+
+from docopt import docopt
 
 from hemingway.report import format_markdown
 from hemingway.validator import run_validator
 
 
 def cli(argv, stdin_text=None):
-    if "--version" in argv:
+    if "--version" in argv[1:]:
         return {
             "exit_code": 0,
             "output": "hemingway-check 1.0.0\n",
         }
-    if "--help" in argv or "-h" in argv:
+    if "--help" in argv[1:] or "-h" in argv[1:]:
         return {
             "exit_code": 0,
             "output": __doc__,
         }
 
-    file_path = None
-    positional = [a for a in argv[1:] if not a.startswith("-")]
-    if positional:
-        file_path = positional[0]
+    args = docopt(__doc__, argv=argv[1:], help=False)
+
+    file_path = args["<file>"]
+    output_format = args["--output-format"]
 
     if file_path is None and stdin_text is None:
         return {
@@ -53,9 +60,14 @@ def cli(argv, stdin_text=None):
             "output": json.dumps(result, indent=2) + "\n",
         }
 
+    if output_format == "json":
+        output = json.dumps(result, indent=2) + "\n"
+    else:
+        output = format_markdown(result)
+
     return {
         "exit_code": 0,
-        "output": format_markdown(result),
+        "output": output,
     }
 
 
