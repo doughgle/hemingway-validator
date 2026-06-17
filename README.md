@@ -45,10 +45,26 @@ The tool prints a single JSON object to stdout with document stats, a summary of
 | `qualifier` | info | Hedging words like *perhaps*, *very*, *really*, *I think* |
 | `complex_word` | info | Words with simpler alternatives: *utilize* → *use*, *terminate* → *end* |
 
-## Run Tests
+## Development
+
+Set up a local development environment with:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -e ".[dev]"
+```
+
+### Run Tests
 
 ```bash
 pytest
+```
+
+### Lint
+
+```bash
+ruff check src/ tests/
 ```
 
 ## License
