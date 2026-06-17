@@ -7,9 +7,7 @@ name = "hemingway-validator"
 version = "1.0.0"
 description = "Hemingway-style writing validator for Markdown documents"
 requires-python = ">=3.10"
-dependencies = [
-    "docopt",
-]
+dependencies = []
 
 [project.scripts]
 hemingway-check = "hemingway.__main__:main"

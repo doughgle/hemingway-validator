@@ -1,24 +1,43 @@
-"""hemingway-check - Validate Markdown against Hemingway writing rules.
-
-Usage:
-  hemingway-check [--output-format <fmt>] [<file>]
-  hemingway-check --version
-  hemingway-check --help
-
-If no file is given, reads from stdin.
-
-Options:
-  --output-format <fmt>  Output format (json or markdown, default: markdown)
-  --version              Show version.
-  --help                 Show this message.
-"""
+import argparse
 import json
 import sys
 
-from docopt import docopt
-
 from hemingway.report import format_markdown, format_markdown_error
 from hemingway.validator import run_validator
+
+
+def _build_parser():
+    parser = argparse.ArgumentParser(
+        prog="hemingway-check",
+        description=(
+            "Validate Markdown against Hemingway writing rules.\n\n"
+            "If no file is given, reads from stdin."
+        ),
+        add_help=False,
+    )
+    parser.add_argument(
+        "file",
+        nargs="?",
+        default=None,
+        help="Path to Markdown file (reads from stdin if omitted)",
+    )
+    parser.add_argument(
+        "--output-format",
+        choices=["json", "markdown"],
+        default="markdown",
+        help="Output format (json or markdown, default: markdown)",
+    )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Show version and exit",
+    )
+    parser.add_argument(
+        "--help",
+        action="store_true",
+        help="Show this help message and exit",
+    )
+    return parser
 
 
 def cli(argv, stdin_text=None):
@@ -30,13 +49,13 @@ def cli(argv, stdin_text=None):
     if "--help" in argv[1:] or "-h" in argv[1:]:
         return {
             "exit_code": 0,
-            "output": __doc__,
+            "output": _build_parser().format_help(),
         }
 
-    args = docopt(__doc__, argv=argv[1:], help=False)
+    parsed = _build_parser().parse_args(argv[1:])
 
-    file_path = args["<file>"]
-    output_format = args["--output-format"]
+    file_path = parsed.file
+    output_format = parsed.output_format
 
     if file_path is None and stdin_text is None:
         error = {
