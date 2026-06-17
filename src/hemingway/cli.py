@@ -10,6 +10,7 @@ If no file is given, reads from stdin.
 import json
 import sys
 
+from hemingway.report import format_markdown
 from hemingway.validator import run_validator
 
 
@@ -54,7 +55,7 @@ def cli(argv, stdin_text=None):
 
     return {
         "exit_code": 0,
-        "output": json.dumps(result, indent=2) + "\n",
+        "output": format_markdown(result),
     }
 
 
